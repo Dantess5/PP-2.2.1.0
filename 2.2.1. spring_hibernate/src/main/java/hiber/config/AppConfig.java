@@ -24,7 +24,6 @@ public class AppConfig {
    private Environment env;
 
    @Bean
-   @Scope("prototype")
    public DataSource getDataSource() {
       DriverManagerDataSource dataSource = new DriverManagerDataSource();
       dataSource.setDriverClassName(env.getProperty("db.driver"));
@@ -35,7 +34,6 @@ public class AppConfig {
    }
 
    @Bean
-   @Scope("prototype")
    public LocalSessionFactoryBean getSessionFactory() {
       LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
       factoryBean.setDataSource(getDataSource());
@@ -50,7 +48,6 @@ public class AppConfig {
    }
 
    @Bean
-   @Scope("prototype")
    public HibernateTransactionManager getTransactionManager() {
       HibernateTransactionManager transactionManager = new HibernateTransactionManager();
       transactionManager.setSessionFactory(getSessionFactory().getObject());

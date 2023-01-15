@@ -23,24 +23,20 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public void add(Car car) {
-        sessionFactory.getCurrentSession().save(car);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public User getUserByCar(String model, int series) {
-        try (Session session = sessionFactory.getCurrentSession()) {
-            Query<User> query = session.createQuery("from User user where user.car.model =: model and user.car.series =: series").setParameter("model", model)
-                    .setParameter("series", series);
-            List<User> list = query.getResultList();
-            if (list == null) {
-                return new User();
-            } else {
-                return list.get(0);
-            }
+
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User user where user.car.model =: model and user.car.series =: series");
+        query.setParameter("model", model);
+        query.setParameter("series", series);
+        List<User> list = query.getResultList();
+        if (list == null) {
+            return new User();
+        } else {
+            return list.get(0);
         }
     }
+
 
     @Override
     @SuppressWarnings("unchecked")
@@ -49,10 +45,4 @@ public class UserDaoImp implements UserDao {
         return query.getResultList();
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Car> listCars() {
-        TypedQuery<Car> query = sessionFactory.getCurrentSession().createQuery("from Car");
-        return query.getResultList();
-    }
 }
